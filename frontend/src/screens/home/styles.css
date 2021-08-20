@@ -1,0 +1,10 @@
+.grid-container{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    padding: 10px;
+    gap: 10px;
+}
+
+img{
+    height: 275px;
+}

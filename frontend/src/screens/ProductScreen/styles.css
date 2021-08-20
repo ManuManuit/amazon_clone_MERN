@@ -1,0 +1,41 @@
+.row{
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    padding: 10px;
+}
+
+.col-2 > img {
+    height: 85vh;
+}
+
+li{
+    list-style: none;
+    text-align: left;
+}
+
+button{
+    width: 95%;
+    padding: 10px;
+    background: #e2e21b;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.product__name{
+font-weight: 600;
+font-size: 20px;
+}
+
+ul{
+    margin: 0;
+    padding: 10px;
+}
+
+.success{
+    color: green;
+}
+
+.error{
+    color: red;
+}
