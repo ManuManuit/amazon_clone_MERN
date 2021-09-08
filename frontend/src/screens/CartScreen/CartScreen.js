@@ -1,23 +1,31 @@
 import React, { useEffect } from 'react'
 import { useParams, useLocation, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { addToCart } from '../../redux/actions/cartActions'
+import { addToCart, removeFromCart } from '../../redux/actions/cartActions'
 
 import './styles.css';
 
-const CartScreen = () => {
+const CartScreen = (props) => {
     const { id } = useParams();
     const search = useLocation().search;
-    const quantity = new URLSearchParams(search).get('quantity');
+    const qty = new URLSearchParams(search).get('quantity');
     const dispatch = useDispatch();
     const cart = useSelector(state => state.cart.cartItems);
-    console.log("CART SCREEN", cart);
+    console.log("CART ==>", cart);
 
     useEffect(() => {
         if (id) {
-            dispatch(addToCart(id, quantity))
+            dispatch(addToCart(id, qty))
         }
-    }, [dispatch, id, quantity])
+    }, [dispatch, id, qty])
+
+    const removeFromCartHandler = (productId) => {
+        dispatch(removeFromCart(productId));
+    }
+
+    const checkoutHandler = () => {
+        props.history.push('/signin?redirect=shipping');
+    }
 
     return (
         <div className="body__cart__screen">
@@ -38,8 +46,8 @@ const CartScreen = () => {
                                 <select
                                     value={item.quantity}
                                     onChange={(e) => {
-                                        dispatch(addToCart(item.product)),
-                                            Number(e.target.value)
+                                        dispatch(addToCart(item.product,
+                                            Number(e.target.value)))
                                     }}
                                 >
                                     {
@@ -51,12 +59,36 @@ const CartScreen = () => {
                             <div className="product_cart_price">
                                 {item.price}€
                             </div>
+                            <div>
+                                <button onClick={() => removeFromCartHandler(item.product)}>Remove from cart</button>
+                            </div>
                         </div>
                     )
                 })}
                 </div>
             }
-
+            <div className="cart_subtotal">
+                <div className="card">
+                    <ul>
+                        <li>
+                            <h2>
+                                Subtotal ({cart.reduce((a, c) => a + c.quantity, "")} items) : 
+                {cart.reduce((a, c) => a + c.price * c.quantity, 0)}€
+                            </h2>
+                        </li>
+                        <li>
+                            <button
+                                type="button"
+                                onClick={checkoutHandler}
+                                className="checkout_button"
+                                disabled={cart.length === 0}
+                            >
+                                Proceed to Checkout
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
 
         </div >
